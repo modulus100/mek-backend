@@ -1,0 +1,9 @@
+spring:
+  main:
+    banner-mode: off
+
+
+springdoc:
+  api-docs:
+    enabled: true
+  show-actuator: true
