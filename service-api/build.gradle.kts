@@ -15,15 +15,10 @@ dependencies {
     implementation(libs.spring.boot.starter.test)
     implementation(libs.spring.boot.openapi)
     implementation(libs.spring.boot.security)
-    implementation(libs.spring.boot.oauth2.client)
-    implementation(libs.spring.boot.oauth2.resource.server)
-
-    implementation(libs.jwt.api)
-    implementation(libs.jwt.impl)
-    implementation(libs.jwt.jackson)
+    implementation(libs.spring.boot.validation)
 
     implementation("org.apache.commons:commons-text")
-//    implementation(project(":utilities"))
+    implementation(project(":auth"))
 }
 
 application {
