@@ -16,16 +16,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-/**
- * A custom filter named {@link CustomBearerTokenAuthenticationFilter} for processing bearer token authentication.
- */
 @Component
-public class CustomBearerTokenAuthenticationFilter extends OncePerRequestFilter {
+public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenService tokenService;
     private final InvalidTokenService invalidTokenService;
 
-    public CustomBearerTokenAuthenticationFilter(TokenService tokenService, InvalidTokenService invalidTokenService) {
+    public BearerTokenAuthenticationFilter(TokenService tokenService, InvalidTokenService invalidTokenService) {
         this.tokenService = tokenService;
         this.invalidTokenService = invalidTokenService;
     }
@@ -48,13 +45,10 @@ public class CustomBearerTokenAuthenticationFilter extends OncePerRequestFilter 
         final String authorizationHeader = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (Token.isBearerToken(authorizationHeader)) {
-
             final String jwt = Token.getJwt(authorizationHeader);
-
             tokenService.verifyAndValidate(jwt);
 
             final String tokenId = tokenService.getId(jwt);
-
             invalidTokenService.checkForInvalidityOfToken(tokenId);
 
             final UsernamePasswordAuthenticationToken authentication = tokenService
@@ -65,7 +59,5 @@ public class CustomBearerTokenAuthenticationFilter extends OncePerRequestFilter 
         }
 
         filterChain.doFilter(httpServletRequest,httpServletResponse);
-
     }
-
 }

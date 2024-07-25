@@ -13,9 +13,8 @@ spring:
 
       maximum-pool-size: 100
       minimum-idle: 10
-      idle-timeout: 30000
-      keepalive-time: 30000
-
+#      idle-timeout: 30000
+#      keepalive-time: 30000
 
 springdoc:
   api-docs:

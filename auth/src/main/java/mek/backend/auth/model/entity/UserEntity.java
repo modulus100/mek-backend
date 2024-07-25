@@ -4,13 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import mek.backend.auth.model.enums.TokenClaims;
+import mek.backend.auth.model.enums.UserStatus;
 
 import java.util.*;
 
 
-/**
- * Represents an entity as {@link UserEntity} for users.
- */
 @Entity
 @Getter
 @Setter
@@ -38,30 +36,39 @@ public class UserEntity {
     @Column(name = "LAST_NAME")
     private String lastName;
 
-//    @ManyToMany
-//    @JoinTable(
-//            name = "user_role_relation",
-//            joinColumns = @JoinColumn(name = "USER_ID"),
-//            inverseJoinColumns = @JoinColumn(name = "ROLE_ID")
-//    )
+    @Builder.Default
+    @Column(name = "STATUS")
+    @Enumerated(EnumType.STRING)
+    private UserStatus status = UserStatus.WAITING_APPROVAL;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_role_relation",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "ROLE_ID")
+    )
+    private List<RoleEntity> roles;
 
     public Map<String, Object> getClaims() {
 
         final Map<String, Object> claims = new HashMap<>();
-        var roles = new ArrayList<RoleEntity>();
 
         claims.put(TokenClaims.USER_ID.getValue(), this.id);
-        claims.put(TokenClaims.USER_PERMISSIONS.getValue(), roles.stream()
+        claims.put(TokenClaims.USER_PERMISSIONS.getValue(), this.roles.stream()
                 .map(RoleEntity::getPermissions)
                 .flatMap(List::stream)
                 .map(PermissionEntity::getName)
                 .toList());
-        claims.put(TokenClaims.USER_FIRST_NAME.getValue(), this.firstName);
-        claims.put(TokenClaims.USER_LAST_NAME.getValue(), this.lastName);
-        claims.put(TokenClaims.USER_EMAIL.getValue(), this.email);
+
+        claims.put(TokenClaims.USER_ROLES.getValue(), this.roles.stream()
+                .map(RoleEntity::getName)
+                .toList());
+
+        claims.put(TokenClaims.USER_STATUS.getValue(), this.status);
+//        claims.put(TokenClaims.USER_FIRST_NAME.getValue(), this.firstName);
+//        claims.put(TokenClaims.USER_LAST_NAME.getValue(), this.lastName);
+//        claims.put(TokenClaims.USER_EMAIL.getValue(), this.email);
 
         return claims;
-
     }
-
 }

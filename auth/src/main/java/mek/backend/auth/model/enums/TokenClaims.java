@@ -17,6 +17,7 @@ public enum TokenClaims {
     USER_FIRST_NAME("userFirstName"),
     USER_LAST_NAME("userLastName"),
     USER_PERMISSIONS("userPermissions"),
+    USER_ROLES("userRoles"),
     USER_EMAIL("userEmail"),
 //    USER_PHONE_NUMBER("userPhoneNumber"),
     STORE_TITLE("storeTitle"),

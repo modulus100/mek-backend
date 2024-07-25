@@ -155,8 +155,10 @@ public class TokenServiceImpl implements TokenService {
 
         final List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         final List<String> permissions = ListUtil.to(payload.get(TokenClaims.USER_PERMISSIONS.getValue()), String.class);
+        final List<String> roles = ListUtil.to(payload.get(TokenClaims.USER_ROLES.getValue()), String.class);
 
         permissions.forEach(permission -> authorities.add(new SimpleGrantedAuthority(permission)));
+        roles.forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role)));
 
         return UsernamePasswordAuthenticationToken
                 .authenticated(jwt, null, authorities);

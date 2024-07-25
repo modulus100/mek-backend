@@ -1,6 +1,6 @@
 package mek.backend.auth.config;
 
-import mek.backend.auth.filter.CustomBearerTokenAuthenticationFilter;
+import mek.backend.auth.filter.BearerTokenAuthenticationFilter;
 import mek.backend.auth.security.CustomAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
@@ -45,7 +44,7 @@ public class SecurityConfig {
      * Configures the security filter chain for the application.
      *
      * @param httpSecurity the {@link HttpSecurity} object to configure.
-     * @param customBearerTokenAuthenticationFilter the custom filter for bearer token authentication.
+     * @param bearerTokenAuthenticationFilter the custom filter for bearer token authentication.
      * @param customAuthenticationEntryPoint the custom authentication entry point.
      * @return a {@link SecurityFilterChain} defining the security configuration.
      * @throws Exception if an error occurs while configuring security.
@@ -53,7 +52,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(
             final HttpSecurity httpSecurity,
-            final CustomBearerTokenAuthenticationFilter customBearerTokenAuthenticationFilter,
+            final BearerTokenAuthenticationFilter bearerTokenAuthenticationFilter,
             final CustomAuthenticationEntryPoint customAuthenticationEntryPoint
     ) throws Exception {
 
@@ -72,7 +71,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(customBearerTokenAuthenticationFilter, BearerTokenAuthenticationFilter.class);
+                .addFilterBefore(bearerTokenAuthenticationFilter, org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter.class);
 
         return httpSecurity.build();
     }

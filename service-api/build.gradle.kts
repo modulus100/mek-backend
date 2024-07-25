@@ -13,15 +13,16 @@ dependencies {
 
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.test)
+    implementation(libs.spring.boot.starter.data.jpa)
     implementation(libs.spring.boot.openapi)
     implementation(libs.spring.boot.security)
     implementation(libs.spring.boot.validation)
 
     implementation("org.apache.commons:commons-text")
     implementation(project(":auth"))
+    implementation(project(":iam"))
 }
 
 application {
-    // Define the main class for the application.
     mainClass = "mek.backend.app.ServiceApiApp"
 }

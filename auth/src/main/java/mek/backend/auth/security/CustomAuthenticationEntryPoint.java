@@ -57,5 +57,4 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
                 .write(responseBody.getBytes());
 
     }
-
 }

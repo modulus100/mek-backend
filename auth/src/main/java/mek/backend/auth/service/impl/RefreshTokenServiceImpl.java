@@ -1,16 +1,16 @@
 package mek.backend.auth.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import mek.backend.auth.exception.UserNotFoundException;
 import mek.backend.auth.exception.UserStatusNotValidException;
-import mek.backend.auth.model.Token;
 import mek.backend.auth.model.dto.request.TokenRefreshRequest;
+import mek.backend.auth.model.dto.response.LoginResponse;
 import mek.backend.auth.model.entity.UserEntity;
 import mek.backend.auth.model.enums.TokenClaims;
 import mek.backend.auth.model.enums.UserStatus;
 import mek.backend.auth.repository.UserRepository;
 import mek.backend.auth.service.RefreshTokenService;
 import mek.backend.auth.service.TokenService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,7 +30,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
      * @return The refreshed authentication token.
      */
     @Override
-    public Token refreshToken(TokenRefreshRequest tokenRefreshRequest) {
+    public LoginResponse refreshToken(TokenRefreshRequest tokenRefreshRequest) {
 
         tokenService.verifyAndValidate(tokenRefreshRequest.getRefreshToken());
 
@@ -39,16 +39,18 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
                 .get(TokenClaims.USER_ID.getValue())
                 .toString();
 
-        final UserEntity userEntityFromDB = userRepository
+        final UserEntity user = userRepository
                 .findById(adminId)
                 .orElseThrow(UserNotFoundException::new);
 
-        this.validateAdminStatus(userEntityFromDB);
+        this.validateAdminStatus(user);
 
-        return tokenService.generateToken(
-                userEntityFromDB.getClaims(),
+        final var token = tokenService.generateToken(
+                user.getClaims(),
                 tokenRefreshRequest.getRefreshToken()
         );
+
+        return LoginResponse.from(token, user);
     }
 
     /**
@@ -58,9 +60,9 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
      * @throws UserStatusNotValidException If the user status is not valid.
      */
     private void validateAdminStatus(final UserEntity userEntity) {
-//        if (!(UserStatus.ACTIVE.equals(userEntity.getUserStatus()))) {
-//            throw new UserStatusNotValidException("UserStatus = " + userEntity.getUserStatus());
-//        }
+        if (!(UserStatus.ACTIVE.equals(userEntity.getStatus()))) {
+            throw new UserStatusNotValidException("UserStatus = " + userEntity.getStatus());
+        }
     }
 
 }

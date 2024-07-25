@@ -1,14 +1,16 @@
 package mek.backend.auth.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import mek.backend.auth.exception.PasswordNotValidException;
+import mek.backend.auth.exception.UserNotActivatedException;
 import mek.backend.auth.exception.UserNotFoundException;
-import mek.backend.auth.model.Token;
 import mek.backend.auth.model.dto.request.LoginRequest;
+import mek.backend.auth.model.dto.response.LoginResponse;
 import mek.backend.auth.model.entity.UserEntity;
+import mek.backend.auth.model.enums.UserStatus;
 import mek.backend.auth.repository.UserRepository;
 import mek.backend.auth.service.LoginService;
 import mek.backend.auth.service.TokenService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,20 +32,23 @@ public class LoginServiceImpl implements LoginService {
      * @return The token representing the user's session.
      */
     @Override
-    public Token login(LoginRequest loginRequest) {
-
-        final UserEntity userEntityFromDB = userRepository
+    public LoginResponse login(LoginRequest loginRequest) {
+        final UserEntity user = userRepository
                 .findUserEntityByEmail(loginRequest.getEmail())
                 .orElseThrow(
                         () -> new UserNotFoundException(loginRequest.getEmail())
                 );
 
         if (Boolean.FALSE.equals(passwordEncoder.matches(
-                loginRequest.getPassword(), userEntityFromDB.getPassword()))) {
+                loginRequest.getPassword(), user.getPassword()))) {
             throw new PasswordNotValidException();
         }
 
-        return tokenService.generateToken(userEntityFromDB.getClaims());
-    }
+        if (user.getStatus() != UserStatus.ACTIVE) {
+            throw new UserNotActivatedException(user.getEmail());
+        }
 
+        final var token = tokenService.generateToken(user.getClaims());
+        return LoginResponse.from(token, user);
+    }
 }

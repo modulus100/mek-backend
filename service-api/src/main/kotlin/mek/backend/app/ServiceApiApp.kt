@@ -1,11 +1,11 @@
 package mek.backend.app
 
-import mek.backend.auth.config.AuthConfig
+import mek.backend.app.config.ServiceConfig
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Import
 
-@Import(value = [AuthConfig::class])
+@Import(value = [ServiceConfig::class])
 @SpringBootApplication
 class ServiceApiApp
 

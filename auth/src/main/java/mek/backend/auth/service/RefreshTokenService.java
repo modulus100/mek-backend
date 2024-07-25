@@ -1,7 +1,7 @@
 package mek.backend.auth.service;
 
-import mek.backend.auth.model.Token;
 import mek.backend.auth.model.dto.request.TokenRefreshRequest;
+import mek.backend.auth.model.dto.response.LoginResponse;
 
 /**
  * Service interface named {@link RefreshTokenService} for refreshing authentication tokens.
@@ -14,6 +14,6 @@ public interface RefreshTokenService {
      * @param tokenRefreshRequest The request containing the refresh token.
      * @return The refreshed authentication token.
      */
-    Token refreshToken(final TokenRefreshRequest tokenRefreshRequest);
+    LoginResponse refreshToken(final TokenRefreshRequest tokenRefreshRequest);
 
 }
