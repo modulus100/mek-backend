@@ -16,237 +16,95 @@ tags:
   - description: Operations about user
     name: user
 paths:
-  /user:
+  /auth/register:
     post:
-      description: This can only be done by the logged in user.
-      operationId: createUser
+      description: Register a new user
+      operationId: registerUser
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
-        description: Created user object
+              $ref: '#/components/schemas/RegisterRequest'
+        description: Register request object
         required: true
       responses:
-        default:
-          description: successful operation
-      security:
-        - api_key: []
-      summary: Create user
+        "201":
+          description: User successfully registered
+      summary: Register user
       tags:
         - user
-      x-content-type: application/json
-      x-accepts:
-        - application/json
-      x-tags:
-        - tag: user
-  /user/createWithArray:
+  x-content-type: application/json
+  x-accepts:
+    - application/json
+  x-tags:
+    - tag: user
+  /auth/login:
     post:
-      description: ""
-      operationId: createUsersWithArrayInput
-      requestBody:
-        $ref: '#/components/requestBodies/UserArray'
-      responses:
-        default:
-          description: successful operation
-      security:
-        - api_key: []
-      summary: Creates list of users with given input array
-      tags:
-        - user
-      x-content-type: application/json
-      x-accepts:
-        - application/json
-      x-tags:
-        - tag: user
-  /user/createWithList:
-    post:
-      description: ""
-      operationId: createUsersWithListInput
-      requestBody:
-        $ref: '#/components/requestBodies/UserArray'
-      responses:
-        default:
-          description: successful operation
-      security:
-        - api_key: []
-      summary: Creates list of users with given input array
-      tags:
-        - user
-      x-content-type: application/json
-      x-accepts:
-        - application/json
-      x-tags:
-        - tag: user
-  /user/login:
-    get:
-      description: ""
+      description: Log in a user
       operationId: loginUser
-      parameters:
-        - description: The user name for login
-          explode: true
-          in: query
-          name: username
-          required: true
-          schema:
-            pattern: "^[a-zA-Z0-9]+[a-zA-Z0-9\\.\\-_]*[a-zA-Z0-9]+$"
-            type: string
-          style: form
-        - description: The password for login in clear text
-          explode: true
-          in: query
-          name: password
-          required: true
-          schema:
-            type: string
-          style: form
-      responses:
-        "200":
-          content:
-            application/xml:
-              schema:
-                type: string
-            application/json:
-              schema:
-                type: string
-          description: successful operation
-          headers:
-            Set-Cookie:
-              description: Cookie authentication key for use with the `api_key` apiKey
-                authentication.
-              explode: false
-              schema:
-                example: AUTH_KEY=abcde12345; Path=/; HttpOnly
-                type: string
-              style: simple
-            X-Rate-Limit:
-              description: calls per hour allowed by the user
-              explode: false
-              schema:
-                format: int32
-                type: integer
-              style: simple
-            X-Expires-After:
-              description: date in UTC when token expires
-              explode: false
-              schema:
-                format: date-time
-                type: string
-              style: simple
-        "400":
-          description: Invalid username/password supplied
-      summary: Logs user into the system
-      tags:
-        - user
-      x-accepts:
-        - application/json
-        - application/xml
-      x-tags:
-        - tag: user
-  /user/logout:
-    get:
-      description: ""
-      operationId: logoutUser
-      responses:
-        default:
-          description: successful operation
-      security:
-        - api_key: []
-      summary: Logs out current logged in user session
-      tags:
-        - user
-      x-accepts:
-        - application/json
-      x-tags:
-        - tag: user
-  /user/{username}:
-    delete:
-      description: This can only be done by the logged in user.
-      operationId: deleteUser
-      parameters:
-        - description: The name that needs to be deleted
-          explode: false
-          in: path
-          name: username
-          required: true
-          schema:
-            type: string
-          style: simple
-      responses:
-        "400":
-          description: Invalid username supplied
-        "404":
-          description: User not found
-      security:
-        - api_key: []
-      summary: Delete user
-      tags:
-        - user
-      x-accepts:
-        - application/json
-      x-tags:
-        - tag: user
-    get:
-      description: ""
-      operationId: getUserByName
-      parameters:
-        - description: The name that needs to be fetched. Use user1 for testing.
-          explode: false
-          in: path
-          name: username
-          required: true
-          schema:
-            type: string
-          style: simple
-      responses:
-        "200":
-          content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-          description: successful operation
-        "400":
-          description: Invalid username supplied
-        "404":
-          description: User not found
-      summary: Get user by user name
-      tags:
-        - user
-      x-accepts:
-        - application/json
-        - application/xml
-      x-tags:
-        - tag: user
-    put:
-      description: This can only be done by the logged in user.
-      operationId: updateUser
-      parameters:
-        - description: name that need to be deleted
-          explode: false
-          in: path
-          name: username
-          required: true
-          schema:
-            type: string
-          style: simple
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
-        description: Updated user object
+              $ref: '#/components/schemas/LoginRequest'
+        description: Login request object
         required: true
       responses:
-        "400":
-          description: Invalid user supplied
-        "404":
-          description: User not found
-      security:
-        - api_key: []
-      summary: Updated user
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+          description: Successful login
+      summary: Log in user
+      tags:
+        - user
+      x-content-type: application/json
+      x-accepts:
+        - application/json
+      x-tags:
+        - tag: user
+  /auth/refresh-token:
+    post:
+      description: Refresh user token
+      operationId: refreshToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+        description: Token refresh request object
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+          description: Successful token refresh
+      summary: Refresh token
+      tags:
+        - user
+      x-content-type: application/json
+      x-accepts:
+        - application/json
+      x-tags:
+        - tag: user
+  /auth/logout:
+    post:
+      description: Log out a user
+      operationId: logoutUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenInvalidateRequest'
+        description: Token invalidate request object
+        required: true
+      responses:
+        "200":
+          description: Successful logout
+      summary: Log out user
       tags:
         - user
       x-content-type: application/json
@@ -255,97 +113,140 @@ paths:
       x-tags:
         - tag: user
 components:
-  requestBodies:
-    UserArray:
-      content:
-        application/json:
-          schema:
-            items:
-              $ref: '#/components/schemas/User'
-            type: array
-      description: List of user object
-      required: true
   schemas:
-    User:
-      description: A User who is purchasing from the pet store
-      example:
-        firstName: firstName
-        lastName: lastName
-        password: password
-        userStatus: 6
-        phone: phone
-        id: 0
-        email: email
-        username: username
+    RegisterRequest:
+      type: object
       properties:
-        id:
-          format: int64
-          type: integer
-        username:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
         email:
           type: string
+          format: email
+          minLength: 7
+          example: "user@example.com"
         password:
           type: string
-        phone:
+          minLength: 8
+          example: "password123"
+        firstName:
           type: string
-        userStatus:
-          description: User Status
-          format: int32
-          type: integer
-      title: a User
+          example: "John"
+        lastName:
+          type: string
+          example: "Doe"
+      required:
+        - email
+        - password
+        - firstName
+        - lastName
+    LoginRequest:
       type: object
-      xml:
-        name: User
-    ApiResponse:
-      description: Describes the result of uploading an image resource
-      example:
-        code: 0
-        type: type
-        message: message
       properties:
-        code:
-          format: int32
-          type: integer
-        type:
+        email:
           type: string
-        message:
+          example: "user@example.com"
+        password:
           type: string
-      title: An uploaded response
+          example: "password123"
+      required:
+        - email
+        - password
+    TokenRefreshRequest:
       type: object
-    updatePetWithForm_request:
       properties:
+        refreshToken:
+          type: string
+          example: "refreshToken123"
+      required:
+        - refreshToken
+    TokenInvalidateRequest:
+      type: object
+      properties:
+        refreshToken:
+          type: string
+          example: "refreshToken123"
+      required:
+        - refreshToken
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/Token'
+        user:
+          $ref: '#/components/schemas/User'
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+      required:
+        - token
+        - user
+        - roles
+    Token:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          example: "accessToken123"
+        accessTokenExpiresAt:
+          type: integer
+          format: int64
+          example: 1623673200
+        refreshToken:
+          type: string
+          example: "refreshToken123"
+      required:
+        - accessToken
+        - accessTokenExpiresAt
+        - refreshToken
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "d290f1ee-6c54-4b01-90e6-d701748f0851"
+        firstName:
+          type: string
+          example: "John"
+        lastName:
+          type: string
+          example: "Doe"
+        email:
+          type: string
+          format: email
+          example: "user@example.com"
+      required:
+        - id
+        - firstName
+        - lastName
+        - email
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "d290f1ee-6c54-4b01-90e6-d701748f0851"
         name:
-          description: Updated name of the pet
           type: string
-        status:
-          description: Updated status of the pet
-          type: string
+          example: "ROLE_USER"
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+      required:
+        - id
+        - name
+        - permissions
+    Permission:
       type: object
-    uploadFile_request:
       properties:
-        additionalMetadata:
-          description: Additional data to pass to server
+        id:
           type: string
-        file:
-          description: file to upload
-          format: binary
+          format: uuid
+          example: "d290f1ee-6c54-4b01-90e6-d701748f0851"
+        name:
           type: string
-      type: object
-  securitySchemes:
-    petstore_auth:
-      flows:
-        implicit:
-          authorizationUrl: http://petstore.swagger.io/api/oauth/dialog
-          scopes:
-            write:pets: modify pets in your account
-            read:pets: read your pets
-      type: oauth2
-    api_key:
-      in: header
-      name: api_key
-      type: apiKey
+          example: "READ_PRIVILEGES"
+      required:
+        - id
+        - name

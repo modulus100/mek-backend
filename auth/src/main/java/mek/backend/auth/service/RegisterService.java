@@ -8,5 +8,5 @@ import mek.backend.auth.model.entity.UserEntity;
  */
 public interface RegisterService {
 
-    UserEntity registerUser(final RegisterRequest registerRequest);
+    UserEntity registerUser(final RegisterRequest request);
 }

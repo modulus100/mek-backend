@@ -16,9 +16,9 @@ spring:
 #      idle-timeout: 30000
 #      keepalive-time: 30000
 
-#server:
-#  servlet:
-#    context-path: /api/v1
+server:
+  servlet:
+    context-path: /api/v1
 
 springdoc:
   api-docs:

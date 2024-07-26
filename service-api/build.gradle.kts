@@ -5,45 +5,48 @@
  */
 
 plugins {
-    id("buildlogic.kotlin-application-conventions")
+    id("buildlogic.kotlin-library-conventions")
+    alias(libs.plugins.openapi)
 }
 
 dependencies {
     api(enforcedPlatform(libs.spring.boot.dependencies))
 
     implementation(libs.spring.boot.starter.web)
-    implementation(libs.spring.boot.starter.test)
-    implementation(libs.spring.boot.starter.data.jpa)
-    implementation(libs.spring.boot.openapi)
-    implementation(libs.spring.boot.security)
     implementation(libs.spring.boot.validation)
+    implementation(libs.spring.boot.security)
+    implementation(libs.spring.boot.starter.test)
 
-    implementation("org.apache.commons:commons-text")
-    api(project(":auth"))
-    api(project(":iam"))
-}
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
 
-application {
-    mainClass = "mek.backend.app.ServiceApiApp"
+    implementation(project(":auth"))
+    implementation(project(":iam"))
 }
 
 openApiGenerate {
     generatorName.set("kotlin-spring")
     inputSpec.set("${project.projectDir}/src/main/resources/api/v1/spec.yaml")
-    apiPackage.set("mek.backend.app")
     configOptions.putAll(
         mapOf(
             Pair("gradleBuildFile", "false"),
             Pair("useSpringBoot3", "true"),
-            Pair("documentationProvider", "none"),
+            Pair("documentationProvider", "none")
         )
     )
     generateApiTests.set(false)
+
+    apiPackage.set("rest.api.v1")
+    modelPackage.set("rest.api.v1")
 }
 
 tasks.compileKotlin {
     dependsOn(tasks.openApiGenerate)
 }
 
-sourceSets.getByName("main").kotlin.srcDir("${layout.buildDirectory}/generate-resources")
-tasks.compileKotlin.get().dependsOn(tasks.openApiGenerate)
+sourceSets {
+    main {
+        java {
+            srcDir("${layout.buildDirectory.get()}/generate-resources/main/src/main/kotlin")
+        }
+    }
+}

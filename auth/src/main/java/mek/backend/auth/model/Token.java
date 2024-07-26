@@ -1,8 +1,10 @@
 package mek.backend.auth.model;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.util.StringUtils;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * Represents a token domain object as {@link Token} used in the application.
@@ -11,8 +13,11 @@ import org.springframework.util.StringUtils;
 @Builder
 public class Token {
 
+    @NotBlank
     private String accessToken;
+    @NotNull
     private Long accessTokenExpiresAt;
+    @NotBlank
     private String refreshToken;
 
     private static final String TOKEN_PREFIX = "Bearer ";

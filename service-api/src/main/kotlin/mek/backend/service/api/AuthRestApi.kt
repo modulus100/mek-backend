@@ -1,4 +1,4 @@
-package mek.backend.app.api
+package mek.backend.service.api
 
 import jakarta.validation.Valid
 import mek.backend.auth.model.dto.request.LoginRequest
@@ -6,11 +6,13 @@ import mek.backend.auth.model.dto.request.RegisterRequest
 import mek.backend.auth.model.dto.request.TokenInvalidateRequest
 import mek.backend.auth.model.dto.request.TokenRefreshRequest
 import mek.backend.auth.model.dto.response.LoginResponse
+import mek.backend.auth.model.entity.UserEntity
 import mek.backend.auth.service.LoginService
 import mek.backend.auth.service.LogoutService
 import mek.backend.auth.service.RefreshTokenService
 import mek.backend.auth.service.RegisterService
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -23,8 +25,9 @@ class AuthRestApi(
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    fun registerAdmin(@RequestBody registerRequest: @Valid RegisterRequest) {
+    fun registerUser(@Valid @RequestBody registerRequest: RegisterRequest): ResponseEntity<Unit> {
         registerService.registerUser(registerRequest)
+        return ResponseEntity.noContent().build()
     }
 
     @PostMapping("/login")

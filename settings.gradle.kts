@@ -17,4 +17,4 @@ plugins {
 }
 
 rootProject.name = "mek-backend"
-include("service-api", "auth", "db-migrator", "list", "domain-services", "iam")
+include("service-api", "auth", "db-migrator", "list", "domain-services", "iam", "app")

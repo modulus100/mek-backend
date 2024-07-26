@@ -11,6 +11,9 @@ postgresqlJdbc = "42.+"
 jwt = "0.12.+"
 openApi = "7.7.0"
 
+[plugins]
+openapi = { id = "org.openapi.generator", version.ref = "openApi" }
+
 [libraries]
 # Kotlin
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }

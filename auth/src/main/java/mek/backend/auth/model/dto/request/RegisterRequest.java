@@ -14,9 +14,11 @@ public class RegisterRequest {
 
     @Email(message = "Please enter valid e-mail address")
     @Size(min = 7, message = "Minimum e-mail length is 7 characters.")
+    @NotBlank
     private String email;
 
     @Size(min = 8)
+    @NotBlank
     private String password;
 
     @NotBlank(message = "First name can't be blank.")
