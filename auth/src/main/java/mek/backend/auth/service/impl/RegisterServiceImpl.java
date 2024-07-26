@@ -3,12 +3,8 @@ package mek.backend.auth.service.impl;
 import lombok.RequiredArgsConstructor;
 import mek.backend.auth.exception.RoleNotFoundException;
 import mek.backend.auth.exception.UserAlreadyExistException;
-import mek.backend.auth.model.User;
 import mek.backend.auth.model.dto.request.RegisterRequest;
 import mek.backend.auth.model.entity.UserEntity;
-import mek.backend.auth.model.mapper.RegisterRequestToUserEntityMapper;
-import mek.backend.auth.model.mapper.UserEntityToUserMapper;
-import mek.backend.auth.repository.PermissionRepository;
 import mek.backend.auth.repository.RoleRepository;
 import mek.backend.auth.repository.UserRepository;
 import mek.backend.auth.service.RegisterService;
@@ -27,11 +23,6 @@ public class RegisterServiceImpl implements RegisterService {
 
     private final RoleRepository roleRepository;
 
-    private final RegisterRequestToUserEntityMapper registerRequestToUserEntityMapper =
-            RegisterRequestToUserEntityMapper.initialize();
-
-    private final UserEntityToUserMapper userEntityToUserMapper = UserEntityToUserMapper.initialize();
-
     private final PasswordEncoder passwordEncoder;
 
     public static final String DEFAULT_ROLE = "USER";
@@ -44,21 +35,24 @@ public class RegisterServiceImpl implements RegisterService {
      */
     @Override
     @Transactional
-    public User registerUser(RegisterRequest registerRequest) {
+    public UserEntity registerUser(RegisterRequest registerRequest) {
 
         if (userRepository.existsUserEntityByEmail(registerRequest.getEmail())) {
             throw new UserAlreadyExistException("The email is already used for another user : " + registerRequest.getEmail());
         }
 
-        final UserEntity userEntityToBeSaved = registerRequestToUserEntityMapper.mapForSaving(registerRequest);
+        final UserEntity userEntityToBeSaved = UserEntity.builder()
+                .email(registerRequest.getEmail())
+                .firstName(registerRequest.getFirstName())
+                .lastName(registerRequest.getLastName())
+                .build();
+
         userEntityToBeSaved.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
         final var defaultRole = roleRepository.findByName(DEFAULT_ROLE)
                 .orElseThrow(() -> new RoleNotFoundException(DEFAULT_ROLE));
 
         userEntityToBeSaved.setRoles(List.of(defaultRole));
-
-        final UserEntity savedUserEntity = userRepository.save(userEntityToBeSaved);
-        return userEntityToUserMapper.map(savedUserEntity);
+        return userRepository.save(userEntityToBeSaved);
     }
 }

@@ -9,11 +9,13 @@ openapi = "2.+"
 liquibase = "4.28.0"
 postgresqlJdbc = "42.+"
 jwt = "0.12.+"
+openApi = "7.7.0"
 
 [libraries]
 # Kotlin
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-spring-plugin = { module = "org.jetbrains.kotlin.plugin.spring:org.jetbrains.kotlin.plugin.spring.gradle.plugin", version.ref = "kotlin" }
+openapi = { module = "org.openapitools:openapi-generator-gradle-plugin", version.ref = "openApi" }
 
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "kotlin" }

@@ -19,10 +19,31 @@ dependencies {
     implementation(libs.spring.boot.validation)
 
     implementation("org.apache.commons:commons-text")
-    implementation(project(":auth"))
-    implementation(project(":iam"))
+    api(project(":auth"))
+    api(project(":iam"))
 }
 
 application {
     mainClass = "mek.backend.app.ServiceApiApp"
 }
+
+openApiGenerate {
+    generatorName.set("kotlin-spring")
+    inputSpec.set("${project.projectDir}/src/main/resources/api/v1/spec.yaml")
+    apiPackage.set("mek.backend.app")
+    configOptions.putAll(
+        mapOf(
+            Pair("gradleBuildFile", "false"),
+            Pair("useSpringBoot3", "true"),
+            Pair("documentationProvider", "none"),
+        )
+    )
+    generateApiTests.set(false)
+}
+
+tasks.compileKotlin {
+    dependsOn(tasks.openApiGenerate)
+}
+
+sourceSets.getByName("main").kotlin.srcDir("${layout.buildDirectory}/generate-resources")
+tasks.compileKotlin.get().dependsOn(tasks.openApiGenerate)

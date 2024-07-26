@@ -7,6 +7,7 @@
 plugins {
     // Apply the common convention plugin for shared build configuration between library and application projects.
     id("buildlogic.kotlin-common-conventions")
+    id("org.openapi.generator")
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application

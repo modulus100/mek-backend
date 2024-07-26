@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/v1/auth")
 class AuthRestApi(
     val registerService: RegisterService,
     val loginService: LoginService,
