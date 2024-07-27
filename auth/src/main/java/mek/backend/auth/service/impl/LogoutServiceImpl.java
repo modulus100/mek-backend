@@ -40,15 +40,11 @@ public class LogoutServiceImpl implements LogoutService {
 
         invalidTokenService.checkForInvalidityOfToken(accessTokenId);
 
-
         final String refreshTokenId = tokenService
                 .getPayload(tokenInvalidateRequest.getRefreshToken())
                 .getId();
 
         invalidTokenService.checkForInvalidityOfToken(refreshTokenId);
-
         invalidTokenService.invalidateTokens(Set.of(accessTokenId,refreshTokenId));
-
     }
-
 }

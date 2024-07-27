@@ -34,13 +34,13 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
         tokenService.verifyAndValidate(tokenRefreshRequest.getRefreshToken());
 
-        final String adminId = tokenService
+        final String userId = tokenService
                 .getPayload(tokenRefreshRequest.getRefreshToken())
                 .get(TokenClaims.USER_ID.getValue())
                 .toString();
 
         final UserEntity user = userRepository
-                .findById(adminId)
+                .findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
         this.validateAdminStatus(user);
@@ -64,5 +64,4 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
             throw new UserStatusNotValidException("UserStatus = " + userEntity.getStatus());
         }
     }
-
 }
