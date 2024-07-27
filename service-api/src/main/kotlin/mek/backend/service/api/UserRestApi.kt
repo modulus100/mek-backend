@@ -1,6 +1,7 @@
 package mek.backend.service.api
 
 import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import mek.backend.iam.repository.IamUserRepository
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -10,6 +11,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api/v1/user")
+@SecurityRequirement(name = "Authentication")
 class UserRestApi(
     val userRepository: IamUserRepository,
 ) {
