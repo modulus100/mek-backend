@@ -29,5 +29,5 @@ public class InvalidTokenEntity {
     private String tokenId;
 
     @Column(name = "INVALIDATED_AT")
-    private LocalDateTime invalidatedAt;
+    private LocalDateTime invalidatedAt = LocalDateTime.now();
 }

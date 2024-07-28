@@ -4,11 +4,12 @@ import mek.backend.auth.model.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Repository interface named {@link UserRepository} for managing {@link UserEntity} entities.
  */
-public interface UserRepository extends JpaRepository<UserEntity, String> {
+public interface UserRepository extends JpaRepository<UserEntity, UUID> {
 
     /**
      * Checks if a user entity exists with the given email.

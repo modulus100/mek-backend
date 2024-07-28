@@ -7,6 +7,8 @@ import mek.backend.auth.service.InvalidTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,22 +21,13 @@ public class InvalidTokenServiceImpl implements InvalidTokenService {
 
     private final InvalidTokenRepository invalidTokenRepository;
 
-    /**
-     * Invalidates multiple tokens identified by their IDs.
-     *
-     * @param tokenIds The set of token IDs to invalidate.
-     */
     @Override
-    public void invalidateTokens(Set<String> tokenIds) {
+    public void invalidateTokens(String accessTokenId, String refreshTokenId) {
 
-        final Set<InvalidTokenEntity> invalidTokenEntities = tokenIds.stream()
-                .map(tokenId -> InvalidTokenEntity.builder()
-                        .tokenId(tokenId)
-                        .build()
-                )
-                .collect(Collectors.toSet());
-
-        invalidTokenRepository.saveAll(invalidTokenEntities);
+        invalidTokenRepository.saveAll(List.of(
+                new InvalidTokenEntity(null, accessTokenId, LocalDateTime.now()),
+                new InvalidTokenEntity(null, refreshTokenId, LocalDateTime.now())
+        ));
     }
 
     /**

@@ -13,6 +13,8 @@ import mek.backend.auth.service.RefreshTokenService;
 import mek.backend.auth.service.TokenService;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 /**
  * Service implementation named {@link RefreshTokenServiceImpl} for refreshing authentication tokens.
  */
@@ -40,7 +42,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
                 .toString();
 
         final UserEntity user = userRepository
-                .findById(userId)
+                .findById(UUID.fromString(userId))
                 .orElseThrow(UserNotFoundException::new);
 
         this.validateAdminStatus(user);

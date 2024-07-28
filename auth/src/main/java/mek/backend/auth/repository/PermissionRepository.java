@@ -4,11 +4,12 @@ import mek.backend.auth.model.entity.PermissionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Repository interface named {@link PermissionRepository} for managing {@link PermissionEntity} entities.
  */
-public interface PermissionRepository extends JpaRepository<PermissionEntity, String> {
+public interface PermissionRepository extends JpaRepository<PermissionEntity, UUID> {
 
     /**
      * Finds a permission entity by its name.

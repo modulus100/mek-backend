@@ -4,11 +4,12 @@ import mek.backend.auth.model.entity.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Repository interface named {@link RoleRepository} for managing {@link RoleEntity} entities.
  */
-public interface RoleRepository extends JpaRepository<RoleEntity, String> {
+public interface RoleRepository extends JpaRepository<RoleEntity, UUID> {
 
     /**
      * Finds a role entity by its name.

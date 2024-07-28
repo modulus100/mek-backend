@@ -7,12 +7,8 @@ import java.util.Set;
  */
 public interface InvalidTokenService {
 
-    /**
-     * Invalidates multiple tokens identified by their IDs.
-     *
-     * @param tokenIds The set of token IDs to invalidate.
-     */
-    void invalidateTokens(final Set<String> tokenIds);
+
+    void invalidateTokens(String accessTokenId, String refreshTokenId);
 
     /**
      * Checks if a token identified by its ID is invalid.

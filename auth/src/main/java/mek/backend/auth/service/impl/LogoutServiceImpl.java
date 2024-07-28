@@ -6,6 +6,7 @@ import mek.backend.auth.service.LogoutService;
 import mek.backend.auth.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -25,6 +26,7 @@ public class LogoutServiceImpl implements LogoutService {
      * @param tokenInvalidateRequest The request containing tokens to invalidate for logout.
      */
     @Override
+    @Transactional
     public void logout(TokenInvalidateRequest tokenInvalidateRequest) {
 
         tokenService.verifyAndValidate(
@@ -45,6 +47,6 @@ public class LogoutServiceImpl implements LogoutService {
                 .getId();
 
         invalidTokenService.checkForInvalidityOfToken(refreshTokenId);
-        invalidTokenService.invalidateTokens(Set.of(accessTokenId,refreshTokenId));
+        invalidTokenService.invalidateTokens(accessTokenId, refreshTokenId);
     }
 }
