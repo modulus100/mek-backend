@@ -52,6 +52,10 @@ public class UserEntity {
     private Instant registrationDate = Instant.now();
 
     @NonNull
+    @Column(name = "birth_date")
+    private Instant birthDate = Instant.now();
+
+    @NonNull
     @Column(name = "is_active")
     private Boolean isActive;
 
@@ -67,14 +71,13 @@ public class UserEntity {
     @ManyToMany
     @JoinTable(
             name = "user_role_relation",
-            joinColumns = @JoinColumn(name = "USER_ID"),
-            inverseJoinColumns = @JoinColumn(name = "ROLE_ID")
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<RoleEntity> roles;
 
     public Map<String, Object> getClaims() {
-
-        final Map<String, Object> claims = new HashMap<>();
+        final var claims = new HashMap<String, Object>();
 
         claims.put(TokenClaims.USER_ID.getValue(), this.id);
         claims.put(TokenClaims.USER_PERMISSIONS.getValue(), this.roles.stream()
@@ -88,10 +91,6 @@ public class UserEntity {
                 .toList());
 
         claims.put(TokenClaims.USER_STATUS.getValue(), this.status);
-//        claims.put(TokenClaims.USER_FIRST_NAME.getValue(), this.firstName);
-//        claims.put(TokenClaims.USER_LAST_NAME.getValue(), this.lastName);
-//        claims.put(TokenClaims.USER_EMAIL.getValue(), this.email);
-
         return claims;
     }
 }

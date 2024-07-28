@@ -2,7 +2,7 @@ create table invalidated_token
 (
     ID             UUID PRIMARY KEY   DEFAULT gen_random_uuid(),
     TOKEN          TEXT      NOT NULL,
-    INVALIDATED_AT TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    INVALIDATED_AT TIMESTAMP NOT NULL
 );
 
 create table company
@@ -20,6 +20,7 @@ create table user_account
     LAST_NAME         VARCHAR(255) NOT NULL,
     STATUS            VARCHAR(40)  NOT NULL,
     REGISTRATION_DATE TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    BIRTH_DATE        TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     IS_ACTIVE         BOOLEAN      NOT NULL,
     JOB_TITLE         VARCHAR(30),
     PHONE_NUMBER      VARCHAR(30),
@@ -75,13 +76,14 @@ WITH inserted_role AS (
 -- Step 2: Insert a new user into the user_account table
      inserted_user AS (
          INSERT
-             INTO user_account (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, STATUS, REGISTRATION_DATE, IS_ACTIVE, JOB_TITLE,
+             INTO user_account (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, STATUS, REGISTRATION_DATE, BIRTH_DATE, IS_ACTIVE, JOB_TITLE,
                                 PHONE_NUMBER, PERSONAL_ID_CODE)
                  VALUES ('aleksandr.ts@gmail.com',
                          '$2a$10$/9JQXWBEbHKU/ZzMFLQTbe6E4A6k6eqkHjNhfSVMSVc4Bp5NykYYS',
                          'Aleksandr',
                          'MegaPihar',
                          'ACTIVE',
+                         now(),
                          now(),
                          TRUE,
                          'Developer',
@@ -124,15 +126,14 @@ FROM role_id r,
 WITH inserted_admin_role AS (
     INSERT INTO user_role (NAME)
         VALUES ('ADMIN')
-        RETURNING ID, NAME
-),
+        RETURNING ID, NAME),
      permission_ids_admin AS (
          INSERT INTO user_permission (name)
              VALUES ('admin:create'), ('admin:read'), ('admin:update'), ('admin:delete')
-             RETURNING ID, NAME
-     )
+             RETURNING ID, NAME)
 -- Bind user permission relation for ADMIN
-INSERT INTO role_permission_relation (ROLE_ID, PERMISSION_ID)
+INSERT
+INTO role_permission_relation (ROLE_ID, PERMISSION_ID)
 SELECT r.ID, p.ID
 FROM inserted_admin_role r
          JOIN permission_ids_admin p ON p.NAME IN ('admin:create', 'admin:read', 'admin:update', 'admin:delete');
@@ -141,15 +142,14 @@ FROM inserted_admin_role r
 WITH inserted_user_role AS (
     INSERT INTO user_role (NAME)
         VALUES ('USER')
-        RETURNING ID, NAME
-),
+        RETURNING ID, NAME),
      permission_ids_user AS (
          INSERT INTO user_permission (name)
              VALUES ('user:create'), ('user:read'), ('user:update'), ('user:delete')
-             RETURNING ID, NAME
-     )
+             RETURNING ID, NAME)
 -- Bind user permission relation for USER
-INSERT INTO role_permission_relation (ROLE_ID, PERMISSION_ID)
+INSERT
+INTO role_permission_relation (ROLE_ID, PERMISSION_ID)
 SELECT r.ID, p.ID
 FROM inserted_user_role r
          JOIN permission_ids_user p ON p.NAME IN ('user:create', 'user:read', 'user:update', 'user:delete');
