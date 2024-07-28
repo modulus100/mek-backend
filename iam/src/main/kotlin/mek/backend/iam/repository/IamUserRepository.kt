@@ -14,7 +14,7 @@ class IamUserRepository(
 
     fun getByEmail(email: String): IamUserEntity {
         val user = jdbcTemplate.queryForObject("""
-            select * from product_user where email = :email;
+            select * from user_account where email = :email;
         """.trimIndent(),
             mapOf("email" to email), RowMapper<IamUserEntity>
             { rs, _ ->
