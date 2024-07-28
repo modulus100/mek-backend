@@ -1,16 +1,14 @@
 package mek.backend.auth.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import mek.backend.auth.exception.TokenAlreadyInvalidatedException;
 import mek.backend.auth.model.entity.InvalidTokenEntity;
 import mek.backend.auth.repository.InvalidTokenRepository;
 import mek.backend.auth.service.InvalidTokenService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Service implementation named {@link InvalidTokenServiceImpl} for managing invalid tokens.
@@ -23,7 +21,6 @@ public class InvalidTokenServiceImpl implements InvalidTokenService {
 
     @Override
     public void invalidateTokens(String accessTokenId, String refreshTokenId) {
-
         invalidTokenRepository.saveAll(List.of(
                 new InvalidTokenEntity(null, accessTokenId, LocalDateTime.now()),
                 new InvalidTokenEntity(null, refreshTokenId, LocalDateTime.now())
@@ -38,13 +35,10 @@ public class InvalidTokenServiceImpl implements InvalidTokenService {
      */
     @Override
     public void checkForInvalidityOfToken(String tokenId) {
-
         final boolean isTokenInvalid = invalidTokenRepository.findByTokenId(tokenId).isPresent();
 
         if (isTokenInvalid) {
             throw new TokenAlreadyInvalidatedException(tokenId);
         }
-
     }
-
 }

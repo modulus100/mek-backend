@@ -1,6 +1,5 @@
 package mek.backend.auth.service;
 
-import java.util.Set;
 
 /**
  * Service interface named {@link InvalidTokenService} for managing invalid tokens.
