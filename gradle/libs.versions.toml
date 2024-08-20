@@ -6,7 +6,7 @@ kotlin = "2.0.0"
 springBoot = "3.+"
 openapi = "2.+"
 
-liquibase = "4.28.0"
+liquibase = "4.29.0"
 postgresqlJdbc = "42.+"
 jwt = "0.12.+"
 openApi = "7.7.0"

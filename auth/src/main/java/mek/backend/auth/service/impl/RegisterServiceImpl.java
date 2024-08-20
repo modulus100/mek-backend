@@ -30,7 +30,6 @@ public class RegisterServiceImpl implements RegisterService {
 
 
     @Override
-    @Transactional
     public UserEntity registerUser(RegisterRequest request) {
         var userEntity = UserEntity.builder()
                 .email(request.getEmail())
