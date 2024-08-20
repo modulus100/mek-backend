@@ -45,7 +45,7 @@ public class UserEntity {
     @Builder.Default
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private UserStatus status = UserStatus.WAITING_APPROVAL;
+    private UserStatus status = UserStatus.ACTIVE;
 
     @NonNull
     @Column(name = "registration_date")
