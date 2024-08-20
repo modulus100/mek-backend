@@ -13,6 +13,7 @@ import mek.backend.auth.service.LoginService;
 import mek.backend.auth.service.TokenService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service implementation named {@link LoginServiceImpl} for handling user login operations.

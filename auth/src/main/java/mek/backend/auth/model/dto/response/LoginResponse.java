@@ -10,16 +10,16 @@ import java.util.List;
 import java.util.UUID;
 
 
-public record LoginResponse(@NotNull Token token, @NotNull User user, @NotNull List<Role> roles) {
+public record LoginResponse(@NotNull Token token, @NotNull LoginResponse.LoginUser user, @NotNull List<Role> roles) {
 
     public record Role(@NotNull UUID id, @NotNull String name, @NotNull List<Permission> permissions) {}
     public record Permission(@NotNull UUID id, @NotNull String name) {}
-    public record User(@NotNull UUID id, @NotNull String firstName, @NotNull String lastName, @NotNull String email) {}
+    public record LoginUser(@NotNull UUID id, @NotNull String firstName, @NotNull String lastName, @NotNull String email) {}
 
     public static LoginResponse from(Token token, UserEntity user) {
         return new LoginResponse(
                 token,
-                new LoginResponse.User(
+                new LoginUser(
                         user.getId(),
                         user.getFirstName(),
                         user.getLastName(),

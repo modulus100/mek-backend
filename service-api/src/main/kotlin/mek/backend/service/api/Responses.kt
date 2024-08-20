@@ -33,7 +33,7 @@ data class User(
     @field:Schema(required = true)
     val birthDate: Instant,
 
-    @field:Schema(required = true)
+    @field:Schema(required = true, name = "isActive", type = "boolean")
     val isActive: Boolean,
 
     val jobTitle: String?,

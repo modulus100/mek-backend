@@ -82,7 +82,7 @@ WITH inserted_role AS (
                          '$2a$10$/9JQXWBEbHKU/ZzMFLQTbe6E4A6k6eqkHjNhfSVMSVc4Bp5NykYYS',
                          'Aleksandr',
                          'MegaPihar',
-                         'Active',
+                         'ACTIVE',
                          now(),
                          now(),
                          TRUE,
