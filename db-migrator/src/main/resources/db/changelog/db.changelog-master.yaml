@@ -8,8 +8,42 @@ databaseChangeLog:
   - changeSet:
       id: 2
       author: dev
-      context: dev
       changes:
         - loadData:
-            file: "classpath:db/data/data-load.csv"
-            tableName: "customer"
+            schemaName: public
+            tableName: user_account
+            file: "classpath:db/data/user_accounts.csv"
+            encoding: UTF-8  # Character encoding
+            columns:
+              - column:
+                  name: EMAIL  # Database column name
+                  header: email  # CSV header name
+              - column:
+                  name: PASSWORD
+                  header: password
+                  type: STRING
+              - column:
+                  name: FIRST_NAME
+                  header: firstName
+              - column:
+                  name: LAST_NAME
+                  header: lastName
+              - column:
+                  name: STATUS
+                  header: status
+              - column:
+                  name: REGISTRATION_DATE
+                  type: DATE
+              - column:
+                  name: BIRTH_DATE
+                  header: birthDate
+                  type: DATE
+              - column:
+                  name: IS_ACTIVE
+                  type: BOOLEAN
+              - column:
+                  name: JOB_TITLE
+              - column:
+                  name: PHONE_NUMBER
+              - column:
+                  name: PERSONAL_ID_CODE

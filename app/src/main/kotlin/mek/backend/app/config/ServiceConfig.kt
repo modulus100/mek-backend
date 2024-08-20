@@ -14,6 +14,4 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
 ])
 @Configuration
 @EnableTransactionManagement
-class ServiceConfig {
-
-}
+class ServiceConfig

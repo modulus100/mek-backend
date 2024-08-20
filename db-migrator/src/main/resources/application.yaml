@@ -15,3 +15,5 @@ spring:
 #      minimum-idle: 10
 #      idle-timeout: 30000
 #      keepalive-time: 30000
+  liquibase:
+    contexts: ${spring.profiles.active}
