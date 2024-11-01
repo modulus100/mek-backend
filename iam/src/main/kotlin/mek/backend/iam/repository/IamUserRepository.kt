@@ -60,7 +60,7 @@ class IamUserRepository(
                 status = UserStatus.valueOf(rs.getString("status")),
                 registrationDate = rs.getTimestamp("registration_date").toInstant(),
                 birthDate = rs.getTimestamp("birth_date").toInstant(),
-                isActive = rs.getBoolean("phone_number"),
+                isActive = rs.getBoolean("is_active"),
                 jobTitle = rs.getString("job_title"),
                 phoneNumber = rs.getString("phone_number"),
                 personalIdCode = rs.getString("personal_id_code")

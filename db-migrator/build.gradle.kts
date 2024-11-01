@@ -20,5 +20,9 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = "mek.backend.migrator.MigratorApp"
+    mainClass = "mek.backend.migrator.MigratorAppKt"
+}
+
+springBoot {
+    mainClass = "mek.backend.migrator.MigratorAppKt"
 }

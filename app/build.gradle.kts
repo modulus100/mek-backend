@@ -21,6 +21,10 @@ dependencies {
 }
 
 application {
-    mainClass = "mek.backend.app.ServiceApiApp"
+    mainClass = "mek.backend.app.ServiceApiAppKt"
+}
+
+springBoot {
+    mainClass = "mek.backend.app.ServiceApiAppKt"
 }
 

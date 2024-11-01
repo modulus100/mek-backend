@@ -15,6 +15,7 @@ repositories {
 }
 
 dependencies {
+    implementation(libs.spring.boot.gradle.plugin)
     implementation(libs.kotlin.gradle.plugin)
     implementation(libs.kotlin.spring.plugin)
     implementation(libs.openapi)

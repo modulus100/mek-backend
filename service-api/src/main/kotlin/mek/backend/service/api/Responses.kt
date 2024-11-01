@@ -19,10 +19,7 @@ data class User(
     val email: String,
 
     @field:Schema(required = true)
-    val firstName: String,
-
-    @field:Schema(required = true)
-    val lastName: String,
+    val name: String,
 
     @field:Schema(required = true)
     val status: UserStatus,
@@ -44,8 +41,7 @@ data class User(
         fun fromEntity(userEntity: IamUserEntity): User = User(
             userEntity.id,
             userEntity.email,
-            userEntity.firstName,
-            userEntity.lastName,
+            "${userEntity.firstName} ${userEntity.lastName}",
             userEntity.status,
             userEntity.registrationDate,
             userEntity.birthDate,
